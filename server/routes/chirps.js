@@ -24,34 +24,37 @@ router.get("/:id?", async (req, res) => {
 });
 
 // Create
-router.post('/', (req, res, next) => {
+router.post("/", async (req, res) => {
   try {
-  res.json(db.Chirps.post());
+  const body = req.body;
+  const dbRes = await db.Chirps.insert(body.userid, body.content, body.location);
+  res.status(200).json(dbRes);
 } catch (e) {
   console.log(e)
-  res.sendStatus(500);
   }
 });
 
 //Delete
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', async (req, res) => {
   try {
-    res.json((db.Chirps.delete(req.params.id))[0]);
+   const id = req.params.id;
+   const dbRes = await db.Chirps.cut(id);
+  res.status(200).send(dbRes);
   } catch (e) {    
     console.log(e)
-    res.sendStatus(500);
-       }
+     }
    });
 
 // Update
-router.put('/:id/edit', (req, res, next) => {
+router.put('/:id', async (req, res) => {
   try {
-    res.json((db.Chirps.put(req.params.id))[0]);
+   const id = req.params.id;
+   const content = req.body.content;
+   const dbRes = await db.Chirps.edit(id, content);
+   res.status(200).json(dbRes);
   } catch (e) { 
     console.log(e)
-    res.sendStatus(500);
   }
-  res.redirect('/');
-})
+ })
 
 export default router;
