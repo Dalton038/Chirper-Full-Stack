@@ -1,43 +1,57 @@
-const express = require("express");
+import * as express from "express"
 const router = express.Router();
-// const chirpsStore = require("../chirpstore.js");
-// no more chirpstore! install mysql from npm and configure the routes to use that instead of chirpstore.
+import db from '../db';
 
-// REST API
-router.get("/:id?", (req, res) => {
-    const id = req.params.id;
+//get all chirps
+router.get('/', async (req, res) => {
+  try {
+    console.log("YES")
+    res.json(await db.Chirps.all());
+  } catch (e) {
+    console.log(e);
+    res.send(500);
+  }
+});
 
-    if (id) {
-        // const chirp = chirpsStore.GetChirp(id);
-        res.json(chirp);
-    } else {
-        const chirps = chirpsStore.GetChirps();
-        res.json(chirps);
-    }
+//get chirps by id
+router.get("/:id?", async (req, res) => {
+  try {
+    res.json((await db.Chirps.one(req.params.id))[0]);
+  } catch (e) {
+    console.log(e)
+    res.sendStatus(500);
+  }
 });
 
 // Create
-router.post("/", (req, res) => {
-    const body = req.body;
-
-    // chirpsStore.CreateChirp(body);
-    res.sendStatus(200);
+router.post('/', (req, res, next) => {
+  try {
+  res.json(db.Chirps.post());
+} catch (e) {
+  console.log(e)
+  res.sendStatus(500);
+  }
 });
 
-// Delete
-router.delete("/:id", (req, res) => {
-    const id = req.params.id;
-    // chirpsStore.DeleteChirp(id);
-    res.sendStatus(200);
-});
+//Delete
+router.delete('/:id', (req, res, next) => {
+  try {
+    res.json((db.Chirps.delete(req.params.id))[0]);
+  } catch (e) {    
+    console.log(e)
+    res.sendStatus(500);
+       }
+   });
 
 // Update
-router.put("/:id", (req, res) => {
-    const id = req.params.id;
-    const body = req.body;
+router.put('/:id/edit', (req, res, next) => {
+  try {
+    res.json((db.Chirps.put(req.params.id))[0]);
+  } catch (e) { 
+    console.log(e)
+    res.sendStatus(500);
+  }
+  res.redirect('/');
+})
 
-    // chirpsStore.UpdateChirp(id, body);
-    res.sendStatus(200);
-});
-
-module.exports = router;
+export default router;
