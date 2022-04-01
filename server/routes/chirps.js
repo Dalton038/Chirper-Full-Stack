@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     res.json(await db.Chirps.all());
   } catch (e) {
     console.log(e);
-    res.send(500);
+    res.sendStatus(500);
   }
 });
 
@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
   try {
   const body = req.body;
   const dbRes = await db.Chirps.insert(body.userid, body.content, body.location);
-  res.status(200).json(dbRes);
+  res.sendStatus(200).json(dbRes);
 } catch (e) {
   console.log(e)
   }
@@ -39,7 +39,7 @@ router.delete('/:id', async (req, res) => {
   try {
    const id = req.params.id;
    const dbRes = await db.Chirps.cut(id);
-  res.status(200).send(dbRes);
+  res.sendStatus(200).send(dbRes);
   } catch (e) {    
     console.log(e)
      }
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
    const id = req.params.id;
    const content = req.body.content;
    const dbRes = await db.Chirps.edit(id, content);
-   res.status(200).json(dbRes);
+   res.sendStatus(200).json(dbRes);
   } catch (e) { 
     console.log(e)
   }
