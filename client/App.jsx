@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import ChirpCard from "./components/ChirpCard.jsx";
 
-const App = () => {
+  const App = () => {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
   const [chirps, setChirps] = useState([
@@ -70,8 +70,8 @@ const App = () => {
               />
               <textarea
                 className="form-control mb-2"
-                              aria-label="With textarea"
-                              placeholder="(500 characters max)"
+                aria-label="With textarea"
+                placeholder="(500 characters max)"
                 value={message}
                 onChange={handleMessageChange}
                 cols="30"
